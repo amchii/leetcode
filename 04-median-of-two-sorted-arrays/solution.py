@@ -24,4 +24,44 @@ from typing import List
 
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        pass
+        nums = (nums1 + nums2)
+        nums.sort()
+        t = len(nums) // 2
+        return nums[t] if len(nums) % 2 == 1 else (nums[t - 1] + nums[t]) / 2
+
+    def findMedianSortedArrays2(self, nums1: List[int], nums2: List[int]) -> float:
+        len1, len2 = len(nums1), len(nums2)
+        if len1 > len2:
+            nums1, nums2 = nums2, nums1
+            len1, len2 = len2, len1
+
+        start = 0
+        end = len1
+        while start <= end:
+            a = (start + end) // 2
+            b = (len1 + len2 + 1) // 2 - a
+            if a > 0 and nums1[a - 1] > nums2[b]:
+                end = a - 1
+            elif a < len1 and nums2[b - 1] > nums1[a]:
+                start = a + 1
+            else:
+                if a == 0:
+                    mid = nums2[b - 1]
+                elif b == 0:
+                    mid = nums1[a - 1]
+                else:
+                    mid = max(nums1[a - 1], nums2[b - 1])
+                if (len1 + len2) % 2 == 1:
+                    return mid
+                else:
+                    if a == len1:
+                        return (mid + nums2[b]) / 2
+                    elif b == len2:
+                        return (mid + nums1[a]) / 2
+                    else:
+                        return (mid + min(nums1[a], nums2[b])) / 2
+
+
+if __name__ == '__main__':
+    print(Solution().findMedianSortedArrays([1, 3], [2]))
+    print(Solution().findMedianSortedArrays2([1, 3], [2]))
