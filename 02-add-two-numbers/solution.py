@@ -91,9 +91,8 @@ class StupidSolution:
         carry = 0
         for i in range(max_len):
             e1, e2 = list_l1[i], list_l2[i]
-            e, next_carry = self.add_and_carry(e1, e2, carry)
+            e, carry = self.add_and_carry(e1, e2, carry)
             res.append(e)
-            carry = next_carry
         if carry:
             res.append(carry)
         return self.ListToListNode(res)
